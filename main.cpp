@@ -241,28 +241,39 @@ void    FlushInstream(istream  &inStream)
 
 LNode*  InsertItem(LNode  *head, int  index, int  item, bool  &bSuccess)
 {
-    LNode *currNode;
+    LNode *currNode, *prevNode;
     currNode = head;
-    LNode *newNode;
+    LNode *newNode = new LNode;
     newNode -> item = item;
     LNode *nextNode;
     int counter = 0;
 
-    if(index == 0)
+    bSuccess = true;
+
+    if(head == NULL || index == 0)
     {
         newNode -> next = head;
+        return newNode;
     }
+
     else if(counter != index)
     {
         while(counter != index)
         {
+            prevNode = currNode;
             currNode = currNode -> next;
             counter++;
+
+            if(currNode == NULL && counter == index)
+            {
+                prevNode -> next = newNode;
+                return head;
+            }
         }
 
         nextNode = currNode -> next;
-        newNode -> next = nextNode;
-        currNode -> next = newNode;
+        newNode -> next = currNode;
+        prevNode -> next = newNode;
     }
     else
     {
@@ -270,5 +281,6 @@ LNode*  InsertItem(LNode  *head, int  index, int  item, bool  &bSuccess)
     }
 
     return head;
+
 
 }  // end of "InsertItem"
